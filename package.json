@@ -1,0 +1,25 @@
+{
+  "name": "explain-myself",
+  "version": "1.0.0",
+  "description": "Stop Making Me Explain Myself — ENS-stored preferences steer any OpenAI-compatible assistant. Ana types her ENS name once; every answer honours it.",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx src/server.ts",
+    "start": "tsx src/server.ts",
+    "build": "tsc --noEmit",
+    "test": "node --test tests/checks.test.mjs",
+    "set-records": "node scripts/set-records.mjs"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "viem": "^2.21.0",
+    "zod": "^3.23.8",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "tsx": "^4.16.2",
+    "typescript": "^5.6.2",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.7.4"
+  }
+}

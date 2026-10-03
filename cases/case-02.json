@@ -1,0 +1,43 @@
+{
+  "case": "case-02",
+  "question": "Explain how rain forms.",
+  "note": "Same question under Ana-style vs default preferences; includes missing/nonsense handling.",
+  "preferenceSets": [
+    {
+      "name": "ana-curta-pt.eth",
+      "records": {
+        "pref.lang": "pt",
+        "pref.length": "short",
+        "pref.sentences": "short",
+        "pref.paragraph": "no-long",
+        "pref.access": "dyslexia",
+        "pref.avoid": "horror"
+      },
+      "expected": {
+        "language": "pt",
+        "maxSentences": 5,
+        "sentenceStyle": "short sentences",
+        "readingLevel": "simple, dyslexia-friendly"
+      },
+      "observedReply": "Entendido.\n\nVou ser breve.\n\nFrases curtas.\n\nSem parágrafo longo."
+    },
+    {
+      "name": "name-with-no-records.eth",
+      "records": {
+        "pref.lang": null,
+        "pref.length": "",
+        "pref.sentences": "gibberish-not-allowed",
+        "pref.paragraph": null,
+        "pref.access": "",
+        "pref.avoid": "mind-control-chemtrails"
+      },
+      "expected": {
+        "language": "en",
+        "maxSentences": 10,
+        "sentenceStyle": "defaults applied",
+        "readingLevel": "standard defaults after discarding nonsense"
+      },
+      "observedReply": "Understood. I will answer clearly and directly in English with a medium-length response."
+    }
+  ]
+}

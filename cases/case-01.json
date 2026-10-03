@@ -1,0 +1,45 @@
+{
+  "case": "case-01",
+  "question": "O que é fotossíntese?",
+  "note": "Same question answered under two different ENS preference sets.",
+  "preferenceSets": [
+    {
+      "name": "ana-curta-pt.eth",
+      "records": {
+        "pref.lang": "pt",
+        "pref.length": "short",
+        "pref.sentences": "short",
+        "pref.paragraph": "no-long",
+        "pref.access": "dyslexia",
+        "pref.avoid": "politics"
+      },
+      "expected": {
+        "language": "pt",
+        "maxSentences": 5,
+        "sentenceStyle": "short sentences, one idea per line",
+        "paragraphStyle": "no long paragraphs",
+        "readingLevel": "simple words, dyslexia-friendly spacing"
+      },
+      "observedReply": "Entendido.\n\nVou ser breve.\n\nFrases curtas.\n\nSem parágrafo longo."
+    },
+    {
+      "name": "leo-longo-en.eth",
+      "records": {
+        "pref.lang": "en",
+        "pref.length": "medium",
+        "pref.sentences": "any",
+        "pref.paragraph": "allow",
+        "pref.access": "none",
+        "pref.avoid": ""
+      },
+      "expected": {
+        "language": "en",
+        "maxSentences": 10,
+        "sentenceStyle": "any length allowed",
+        "paragraphStyle": "paragraphs allowed",
+        "readingLevel": "standard"
+      },
+      "observedReply": "Understood. I will answer clearly and directly in English with a medium-length response."
+    }
+  ]
+}

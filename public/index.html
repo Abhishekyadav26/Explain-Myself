@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Explain Myself — ENS preferences assistant</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 640px; margin: 2rem auto; padding: 0 1rem; line-height: 1.8; }
+  label { display: block; margin-top: 1rem; font-weight: 600; }
+  input, textarea { width: 100%; padding: 0.6rem; font-size: 1rem; margin-top: 0.3rem; }
+  button { margin-top: 0.8rem; padding: 0.6rem 1.2rem; font-size: 1rem; cursor: pointer; }
+  #prefs { background: #f4f4f5; padding: 0.8rem; border-radius: 8px; margin-top: 1rem; white-space: pre-wrap; }
+  #answer { background: #ecfdf5; padding: 1rem; border-radius: 8px; margin-top: 1rem; white-space: pre-wrap; }
+  .hint { color: #555; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<h1>Explain Myself</h1>
+<p class="hint">Type your ENS name once. It is saved in this browser. Every answer honours it.</p>
+<label for="ens">ENS name (Sepolia)</label>
+<input id="ens" placeholder="ana-curta-pt.eth" autocomplete="off" />
+<label for="q">Question</label>
+<textarea id="q" rows="3" placeholder="O que é fotossíntese?"></textarea>
+<button id="ask">Ask</button>
+<button id="forget" type="button">Forget name</button>
+<div id="prefs"></div>
+<div id="answer"></div>
+<script>
+  const ensEl = document.getElementById('ens');
+  const qEl = document.getElementById('q');
+  const prefsEl = document.getElementById('prefs');
+  const ansEl = document.getElementById('answer');
+  ensEl.value = localStorage.getItem('ensName') || '';
+  async function refreshPrefs() {
+    const name = ensEl.value.trim();
+    if (!name) { prefsEl.textContent = ''; return; }
+    try {
+      const r = await fetch('/api/resolve?name=' + encodeURIComponent(name));
+      const j = await r.json();
+      prefsEl.textContent = 'Preferences for ' + (j.normalizedName || name) + ':\n' + JSON.stringify(j.prefs, null, 2);
+    } catch { prefsEl.textContent = ''; }
+  }
+  ensEl.addEventListener('change', () => {
+    localStorage.setItem('ensName', ensEl.value.trim());
+    refreshPrefs();
+  });
+  document.getElementById('forget').onclick = () => {
+    localStorage.removeItem('ensName');
+    ensEl.value = '';
+    prefsEl.textContent = '';
+  };
+  document.getElementById('ask').onclick = async () => {
+    const ensName = ensEl.value.trim();
+    const question = qEl.value.trim();
+    if (!ensName || !question) { ansEl.textContent = 'Enter your ENS name and a question.'; return; }
+    localStorage.setItem('ensName', ensName);
+    ansEl.textContent = 'Thinking…';
+    const r = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ensName, question })
+    });
+    const j = await r.json();
+    ansEl.textContent = j.answer || j.error || 'No answer.';
+    prefsEl.textContent = 'Preferences for ' + (j.normalizedName || ensName) + ':\n' + JSON.stringify(j.prefs, null, 2);
+  };
+  refreshPrefs();
+</script>
+</body>
+</html>
